@@ -1,0 +1,32 @@
+# Environment files (never commit real secrets)
+.env
+backend/.env
+*.env
+!*.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+*.db
+*.sqlite3
+
+# Node
+node_modules/
+dist/
+.cache/
+
+# Docker
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

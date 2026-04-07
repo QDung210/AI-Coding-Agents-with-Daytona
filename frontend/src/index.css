@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    font-family: 'JetBrains Mono', monospace;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-surface;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded;
+  }
+}
+
+/* ── Driver.js dark theme ── */
+.driver-popover.ai-workspace-tour {
+  background-color: #0F172A;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  color: #F8FAFC;
+  font-family: 'JetBrains Mono', monospace;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  max-width: 320px;
+}
+.driver-popover.ai-workspace-tour .driver-popover-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #F8FAFC;
+  margin-bottom: 8px;
+}
+.driver-popover.ai-workspace-tour .driver-popover-description {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #94A3B8;
+}
+.driver-popover.ai-workspace-tour .driver-popover-description b { color: #F8FAFC; }
+.driver-popover.ai-workspace-tour .driver-popover-description code {
+  color: #22C55E;
+  background: #1E293B;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.driver-popover.ai-workspace-tour .driver-popover-footer { margin-top: 14px; }
+.driver-popover.ai-workspace-tour .driver-popover-progress-text {
+  font-size: 11px;
+  color: #94A3B8;
+}
+.driver-popover.ai-workspace-tour button.driver-popover-next-btn {
+  background-color: #22C55E;
+  color: #020617;
+  border: none;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  cursor: pointer;
+  text-shadow: none;
+}
+.driver-popover.ai-workspace-tour button.driver-popover-next-btn:hover { background-color: #16a34a; }
+.driver-popover.ai-workspace-tour button.driver-popover-prev-btn {
+  background-color: transparent;
+  color: #94A3B8;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  padding: 6px 14px;
+  cursor: pointer;
+  text-shadow: none;
+}
+.driver-popover.ai-workspace-tour button.driver-popover-prev-btn:hover {
+  color: #F8FAFC;
+  border-color: #94A3B8;
+}
+.driver-popover.ai-workspace-tour button.driver-popover-close-btn { color: #94A3B8; }
+.driver-popover.ai-workspace-tour button.driver-popover-close-btn:hover { color: #F8FAFC; }
