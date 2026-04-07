@@ -21,122 +21,23 @@ This project is a full-stack AI agent execution platform. You submit a coding ta
 
 ## What Can Daytona Do?
 
-Daytona is **secure and elastic infrastructure for running AI-generated code**. It is built around the concept of a *sandbox* — an on-demand, fully isolated cloud environment you can spin up, use, and destroy entirely through an API or SDK.
+Daytona is **secure and elastic infrastructure for running AI-generated code** — built around the *sandbox*, an on-demand isolated Linux environment you spin up, use, and destroy entirely via API or SDK.
 
-Here is the full picture of what Daytona provides:
-
-### Sandbox Lifecycle
-Provision, start, stop, resize, archive, and delete isolated Linux environments on demand — all via API. Each sandbox is fully isolated: separate filesystem, separate process tree, separate network namespace.
-
-```python
-from daytona import Daytona, CreateSandboxParams
-
-daytona = Daytona()
-sandbox = daytona.create(CreateSandboxParams(language="python"))
-sandbox.stop()
-sandbox.start()
-sandbox.delete()
-```
-
-### Process & Command Execution
-Run arbitrary shell commands and capture output. Go deeper with persistent sessions (stateful shell), PTY (interactive terminal), and streaming logs.
-
-```python
-result = sandbox.process.exec("python -m pytest tests/ -v")
-print(result.output)
-
-# Stateful session — commands share shell context
-session = sandbox.process.create_session("my-shell")
-sandbox.process.exec_session(session.id, "cd /app && export ENV=prod")
-sandbox.process.exec_session(session.id, "python main.py")  # ENV is still set
-```
-
-### File System
-Full file management: upload, download, list, create, delete, move, find, search content, replace text, set permissions — all programmatically.
-
-```python
-sandbox.fs.upload_file("/app/main.py", open("main.py", "rb").read())
-content = sandbox.fs.download_file("/app/output.txt")
-sandbox.fs.replace_in_files("/app", "old_function", "new_function")
-```
-
-### Git Operations
-Clone repositories, create branches, commit and push changes — native Git support without needing to shell out.
-
-```python
-sandbox.git.clone("https://github.com/user/repo.git", "/app/repo")
-sandbox.git.create_branch("/app/repo", "feature/my-change")
-sandbox.git.add("/app/repo", ["."])
-sandbox.git.commit("/app/repo", "feat: add new feature", "Bot", "bot@example.com")
-sandbox.git.push("/app/repo")
-```
-
-### Public Preview URLs
-Expose any port running inside the sandbox as a public HTTPS URL instantly — no tunnels, no ngrok, no extra config.
-
-```python
-preview = sandbox.get_preview_link(port=3000)
-print(preview.url)  # https://xyz.sandbox.daytona.io
-```
-
-Supports signed preview links with expiry for access control.
-
-### Templates & Custom Snapshots
-Start from pre-built templates (`ubuntu-22`, `python-3.11`, `node-20`) or your own custom snapshots — for near-instant startup with dependencies pre-installed.
-
-```python
-sandbox = daytona.create(CreateSandboxParams(snapshot="my-prebuilt-env"))
-```
-
-### Declarative Image Builder
-Build custom Docker images programmatically — specify base image, run apt-get or pip install, set env vars, copy files — without writing a Dockerfile.
-
-```python
-image = (
-    daytona.image.base("ubuntu:22.04")
-    .apt_get(["python3", "git", "curl"])
-    .pip_install(["fastapi", "langchain"])
-    .env({"APP_ENV": "production"})
-    .run("mkdir -p /app")
-)
-sandbox = daytona.create(CreateSandboxParams(image=image))
-```
-
-### Volumes (Persistent Storage)
-Mount shared volumes across multiple sandboxes — useful for sharing datasets, caches, or build artifacts between runs.
-
-### Computer Use
-Full desktop automation inside the sandbox: mouse clicks, keyboard input, screenshots, screen recording. Build agents that can interact with GUIs.
-
-```python
-sandbox.computer_use.start()
-sandbox.computer_use.mouse.click(x=100, y=200)
-sandbox.computer_use.keyboard.type("Hello world")
-screenshot = sandbox.computer_use.screenshot.take()
-```
-
-### LSP (Language Server Protocol)
-Start a language server inside the sandbox and query code completions, document symbols, and workspace-wide symbol search — exactly what a code-aware AI agent needs.
-
-```python
-lsp = sandbox.lsp_server.start("python", "/app")
-completions = lsp.completions("/app/main.py", line=10, col=5)
-symbols = lsp.workspace_symbols("MyClass")
-```
-
-### Lifecycle Management
-Set auto-archive and auto-delete intervals so resources clean themselves up without manual intervention.
-
-```python
-sandbox.set_auto_delete_interval(minutes=30)
-sandbox.set_auto_archive_interval(hours=2)
-```
-
-### Observability
-Built-in OpenTelemetry tracing, audit logs, per-sandbox resource usage, and a billing dashboard — everything you need to operate sandboxes in production.
-
-### Multi-SDK, Multi-Region
-Official SDKs for **Python**, **TypeScript/JavaScript**, and **Go**. Deploy sandboxes in **US** or **EU** regions.
+| Capability | Description |
+|---|---|
+| **Sandbox Lifecycle** | Create, start, stop, resize, archive, delete — fully isolated filesystem, process tree, and network per sandbox |
+| **Command Execution** | Run shell commands and capture output; stateful sessions (persistent shell context), PTY, and log streaming |
+| **File System** | Upload, download, list, create, move, search, replace text, set permissions — all programmatically |
+| **Git Operations** | Clone, branch, commit, push/pull — native Git support without shelling out |
+| **Public Preview URLs** | Instantly expose any sandbox port as a public HTTPS URL — no tunnels, no ngrok; signed URLs with expiry supported |
+| **Templates & Snapshots** | Start from `ubuntu-22`, `python-3.11`, `node-20`, or your own custom snapshots for fast cold start |
+| **Declarative Image Builder** | Build Docker images in code: apt-get, pip install, env vars, copy files — no Dockerfile needed |
+| **Volumes** | Persistent shared storage across multiple sandboxes (datasets, caches, build artifacts) |
+| **Computer Use** | Full desktop automation: mouse, keyboard, screenshots, screen recording inside the sandbox |
+| **LSP Support** | Language server inside the sandbox — code completions, document symbols, workspace search |
+| **Lifecycle Management** | Auto-archive and auto-delete intervals — resources clean themselves up |
+| **Observability** | Built-in OpenTelemetry tracing, audit logs, per-sandbox billing dashboard |
+| **Multi-SDK / Multi-Region** | Python, TypeScript, Go SDKs · US and EU regions |
 
 ---
 
